@@ -31,6 +31,17 @@
                     }
                 }
             }
+        },
+        "sensor": {
+            "supply_air_inlet_temperature": {"name": "Tiekiamo oro įleidimo temperatūra"},
+            "supply_air_outlet_temperature": {"name": "Tiekiamo oro išleidimo temperatūra"},
+            "extract_air_inlet_temperature": {"name": "Ištraukiamo oro įleidimo temperatūra"},
+            "exhaust_air_outlet_temperature": {"name": "Šalinamo oro išleidimo temperatūra"},
+            "supply_fan_speed": {"name": "Tiekiamo oro ventiliatoriaus greitis"},
+            "extract_fan_speed": {"name": "Ištraukiamo oro ventiliatoriaus greitis"},
+            "filter_remaining_time": {"name": "Likęs filtro veikimo laikas"},
+            "total_working_time": {"name": "Bendras veikimo laikas"},
+            "alarm_status": {"name": "Aliarmo būsena"}
         }
     }
 }

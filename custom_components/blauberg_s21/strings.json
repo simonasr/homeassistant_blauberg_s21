@@ -18,16 +18,27 @@
     }
   },
   "entity": {
-    "climate": {
-        "s21climate": {
-            "state_attributes": {
-                "fan_mode": {
-                    "state": {
-                        "custom": "Custom"
+        "climate": {
+            "s21climate": {
+                "state_attributes": {
+                    "fan_mode": {
+                        "state": {
+                            "custom": "Custom"
+                        }
                     }
                 }
             }
+        },
+        "sensor": {
+            "supply_air_inlet_temperature": {"name": "Supply air inlet temperature"},
+            "supply_air_outlet_temperature": {"name": "Supply air outlet temperature"},
+            "extract_air_inlet_temperature": {"name": "Extract air inlet temperature"},
+            "exhaust_air_outlet_temperature": {"name": "Exhaust air outlet temperature"},
+            "supply_fan_speed": {"name": "Supply fan speed"},
+            "extract_fan_speed": {"name": "Extract fan speed"},
+            "filter_remaining_time": {"name": "Filter remaining time"},
+            "total_working_time": {"name": "Total working time"},
+            "alarm_status": {"name": "Alarm status"}
         }
     }
-  }
 }

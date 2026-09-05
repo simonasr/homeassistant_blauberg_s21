@@ -2,7 +2,7 @@
 
 # What This Is
 
-This is a custom component to allows you to control and monitor your Blauberg S21 HVAC system locally.
+This custom component lets you control and monitor your Blauberg S21 HVAC system locally.
 
 # Installation and Configuration
 
@@ -13,6 +13,27 @@ To configure this integration, go to Home Assistant web interface Configuration 
 
 When you are done with configuration you should see your device in Settings -> Devices & Services
 
-# Development
+# Telemetry sensors
 
-See [underlying pybls21 library](https://github.com/jvitkauskas/pybls21)
+The integration adds the following sensors alongside the climate entity:
+
+- Supply air inlet and outlet temperatures
+- Extract air inlet and exhaust air outlet temperatures
+- Supply and extract fan speeds
+- Remaining filter time and total working time
+- Raw alarm status
+
+Unavailable optional telemetry is shown as `unknown`; it does not make the device unavailable.
+
+# Development status
+
+Version `0.5.0-dev.0` is a development build. It temporarily installs the extended-telemetry
+revision of [pybls21](https://github.com/simonasr/pybls21) directly from Git while a packaged
+release is prepared.
+
+The integration refreshes the device once every 30 seconds through a shared coordinator. Control
+commands request one immediate refresh so the climate entity and all telemetry sensors update together.
+
+For local checks, install `requirements_test.txt` and run `pytest` from the repository root.
+
+See the [underlying pybls21 library](https://github.com/simonasr/pybls21).
