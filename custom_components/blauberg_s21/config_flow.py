@@ -1,4 +1,5 @@
 """Config flow for Blauberg S21 integration."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -73,7 +74,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors["base"] = "cannot_connect"
         except UnsupportedDeviceException:
             errors["base"] = "unsupported_device"
-        except Exception:  # pylint: disable=broad-except
+        except Exception:  # noqa: BLE001  # pylint: disable=broad-except
             errors["base"] = "unknown"
         else:
             await self.async_set_unique_id(info["unique_id"])
