@@ -25,11 +25,10 @@ The integration adds the following sensors alongside the climate entity:
 
 Unavailable optional telemetry is shown as `unknown`; it does not make the device unavailable.
 
-# Development status
+# Library dependency
 
-Version `0.5.0-dev.0` is a development build. It temporarily installs the extended-telemetry
-revision of [pybls21](https://github.com/simonasr/pybls21) directly from Git while a packaged
-release is prepared.
+Version `0.5.0` installs the maintained [pybls21](https://github.com/simonasr/pybls21)
+4.3.0 revision from an immutable Git commit.
 
 The integration refreshes the device once every 30 seconds through a shared coordinator. Control
 commands request one immediate refresh so the climate entity and all telemetry sensors update together.
