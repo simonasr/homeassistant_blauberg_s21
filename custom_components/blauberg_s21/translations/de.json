@@ -29,6 +29,23 @@
                 }
             }
         },
+        "button": {
+            "reset_filter_timer": {"name": "Filtertimer zurücksetzen"},
+            "reset_alarms": {"name": "Alarme zurücksetzen"}
+        },
+        "number": {
+            "manual_fan_speed": {"name": "Manuelle Lüftergeschwindigkeit"}
+        },
+        "select": {
+            "rotor_mode": {
+                "name": "Rotormodus",
+                "state": {
+                    "auto": "Automatisch",
+                    "rotor_on": "Ein",
+                    "rotor_off": "Aus"
+                }
+            }
+        },
         "sensor": {
             "supply_air_inlet_temperature": {"name": "Zuluft-Eintrittstemperatur"},
             "supply_air_outlet_temperature": {"name": "Zuluft-Austrittstemperatur"},

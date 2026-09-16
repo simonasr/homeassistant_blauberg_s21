@@ -32,6 +32,23 @@
                 }
             }
         },
+        "button": {
+            "reset_filter_timer": {"name": "Atstatyti filtro laikmatį"},
+            "reset_alarms": {"name": "Atstatyti aliarmus"}
+        },
+        "number": {
+            "manual_fan_speed": {"name": "Rankinis ventiliatoriaus greitis"}
+        },
+        "select": {
+            "rotor_mode": {
+                "name": "Rotoriaus režimas",
+                "state": {
+                    "auto": "Automatinis",
+                    "rotor_on": "Įjungtas",
+                    "rotor_off": "Išjungtas"
+                }
+            }
+        },
         "sensor": {
             "supply_air_inlet_temperature": {"name": "Tiekiamo oro įleidimo temperatūra"},
             "supply_air_outlet_temperature": {"name": "Tiekiamo oro išleidimo temperatūra"},

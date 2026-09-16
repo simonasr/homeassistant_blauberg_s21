@@ -29,6 +29,23 @@
                 }
             }
         },
+        "button": {
+            "reset_filter_timer": {"name": "Reset filter timer"},
+            "reset_alarms": {"name": "Reset alarms"}
+        },
+        "number": {
+            "manual_fan_speed": {"name": "Manual fan speed"}
+        },
+        "select": {
+            "rotor_mode": {
+                "name": "Rotor mode",
+                "state": {
+                    "auto": "Auto",
+                    "rotor_on": "On",
+                    "rotor_off": "Off"
+                }
+            }
+        },
         "sensor": {
             "supply_air_inlet_temperature": {"name": "Supply air inlet temperature"},
             "supply_air_outlet_temperature": {"name": "Supply air outlet temperature"},
