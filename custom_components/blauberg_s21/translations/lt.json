@@ -56,6 +56,7 @@
             "exhaust_air_outlet_temperature": {"name": "Šalinamo oro išleidimo temperatūra"},
             "supply_fan_speed": {"name": "Tiekiamo oro ventiliatoriaus greitis"},
             "extract_fan_speed": {"name": "Ištraukiamo oro ventiliatoriaus greitis"},
+            "heat_exchanger_control_signal": {"name": "Šilumokaičio valdymo signalas"},
             "filter_remaining_time": {"name": "Likęs filtro veikimo laikas"},
             "total_working_time": {"name": "Bendras veikimo laikas"},
             "alarm_status": {"name": "Aliarmo būsena"}

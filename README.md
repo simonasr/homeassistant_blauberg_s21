@@ -20,6 +20,7 @@ The integration adds the following sensors alongside the climate entity:
 - Supply air inlet and outlet temperatures
 - Extract air inlet and exhaust air outlet temperatures
 - Supply and extract fan speeds
+- Heat-exchanger control signal
 - Remaining filter time and total working time
 - Raw alarm status
 
@@ -39,7 +40,7 @@ not exposed.
 # Library dependency
 
 Version `0.6.0` installs the maintained [pybls21](https://github.com/simonasr/pybls21)
-4.4.0 revision from an immutable Git commit.
+5.0.0 revision from an immutable Git commit.
 
 The integration refreshes the device once every 30 seconds through a shared coordinator. Control
 commands request one immediate refresh so the climate entity and all telemetry sensors update together.

@@ -6,7 +6,12 @@ from types import SimpleNamespace
 
 import pytest
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
-from homeassistant.const import REVOLUTIONS_PER_MINUTE, UnitOfTemperature, UnitOfTime
+from homeassistant.const import (
+    PERCENTAGE,
+    REVOLUTIONS_PER_MINUTE,
+    UnitOfTemperature,
+    UnitOfTime,
+)
 
 from custom_components.blauberg_s21.coordinator import BlaubergS21DataUpdateCoordinator
 from custom_components.blauberg_s21.sensor import SENSOR_DESCRIPTIONS, BlaubergS21Sensor
@@ -34,6 +39,7 @@ def device():
         exhaust_air_outlet_temperature=8.0,
         supply_fan_speed=1010,
         extract_fan_speed=990,
+        heat_exchanger_control_percent=37,
         filter_remaining_minutes=120,
         total_working_time_minutes=240,
         alarm_state=0,
@@ -56,7 +62,7 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
         for description in SENSOR_DESCRIPTIONS
     }
 
-    assert len(sensors) == 9
+    assert len(sensors) == 10
     assert sensors["supply_air_inlet_temperature"].native_value == 10.5
     assert sensors["supply_air_outlet_temperature"].native_value == 20.0
     assert sensors["extract_air_inlet_temperature"].native_value is None
@@ -65,6 +71,15 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
     )
     assert sensors["supply_fan_speed"].device_class is None
     assert sensors["supply_fan_speed"].state_class is SensorStateClass.MEASUREMENT
+    assert sensors["heat_exchanger_control_signal"].native_value == 37
+    assert (
+        sensors["heat_exchanger_control_signal"].native_unit_of_measurement
+        == PERCENTAGE
+    )
+    assert (
+        sensors["heat_exchanger_control_signal"].state_class
+        is SensorStateClass.MEASUREMENT
+    )
     assert sensors["filter_remaining_time"].device_class is SensorDeviceClass.DURATION
     assert (
         sensors["filter_remaining_time"].native_unit_of_measurement

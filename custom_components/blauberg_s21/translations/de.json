@@ -53,6 +53,7 @@
             "exhaust_air_outlet_temperature": {"name": "Fortluft-Austrittstemperatur"},
             "supply_fan_speed": {"name": "Zuluftventilatordrehzahl"},
             "extract_fan_speed": {"name": "Abluftventilatordrehzahl"},
+            "heat_exchanger_control_signal": {"name": "Wärmetauscher-Steuersignal"},
             "filter_remaining_time": {"name": "Verbleibende Filterlaufzeit"},
             "total_working_time": {"name": "Gesamtbetriebszeit"},
             "alarm_status": {"name": "Alarmstatus"}
