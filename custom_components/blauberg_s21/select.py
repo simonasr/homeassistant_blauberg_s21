@@ -23,8 +23,8 @@ OPTION_ROTOR_OFF = "rotor_off"
 
 OPTION_TO_MODE = {
     OPTION_AUTO: HeatExchangerMode.AUTO,
-    OPTION_ROTOR_ON: HeatExchangerMode.HEAT_RECOVERY,
-    OPTION_ROTOR_OFF: HeatExchangerMode.BYPASS,
+    OPTION_ROTOR_ON: HeatExchangerMode.ROTOR_ON,
+    OPTION_ROTOR_OFF: HeatExchangerMode.ROTOR_OFF,
 }
 MODE_TO_OPTION = {mode: option for option, mode in OPTION_TO_MODE.items()}
 

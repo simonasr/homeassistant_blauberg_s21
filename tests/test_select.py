@@ -65,17 +65,22 @@ def test_rotor_select_metadata_and_state(coordinator, config_entry) -> None:
     assert entity.device_info["identifiers"] == {("blauberg_s21", "synthetic-device")}
 
 
-async def test_rotor_select_command_refreshes_confirmed_state(
-    coordinator, config_entry
+@pytest.mark.parametrize(
+    ("option", "expected_mode"),
+    [
+        (OPTION_ROTOR_ON, HeatExchangerMode.ROTOR_ON),
+        (OPTION_ROTOR_OFF, HeatExchangerMode.ROTOR_OFF),
+    ],
+)
+async def test_rotor_select_commands_refresh_confirmed_state(
+    coordinator, config_entry, option, expected_mode
 ) -> None:
-    """A valid selection writes the protocol enum and refreshes once."""
+    """Each valid selection writes its protocol enum and refreshes once."""
     entity = BlaubergS21RotorModeSelect(coordinator, config_entry)
 
-    await entity.async_select_option(OPTION_ROTOR_OFF)
+    await entity.async_select_option(option)
 
-    coordinator.client.set_heat_exchanger_mode.assert_awaited_once_with(
-        HeatExchangerMode.BYPASS
-    )
+    coordinator.client.set_heat_exchanger_mode.assert_awaited_once_with(expected_mode)
     coordinator.async_request_refresh.assert_awaited_once()
 
 

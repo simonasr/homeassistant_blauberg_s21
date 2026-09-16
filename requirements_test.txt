@@ -1,2 +1,2 @@
-pybls21 @ git+https://github.com/simonasr/pybls21.git@817e6a32e81635e3b9e14d9803a37ce0d79d2189
+pybls21 @ git+https://github.com/simonasr/pybls21.git@df344f92181d31698a1fabbaca5074b48505bc67
 pytest-homeassistant-custom-component>=0.13.282

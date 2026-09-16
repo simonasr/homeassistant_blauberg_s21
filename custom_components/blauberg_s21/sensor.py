@@ -13,6 +13,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
+    PERCENTAGE,
     REVOLUTIONS_PER_MINUTE,
     UnitOfTemperature,
     UnitOfTime,
@@ -79,6 +80,13 @@ SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
         translation_key="extract_fan_speed",
         attribute="extract_fan_speed",
         native_unit_of_measurement=REVOLUTIONS_PER_MINUTE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="heat_exchanger_control_signal",
+        translation_key="heat_exchanger_control_signal",
+        attribute="heat_exchanger_control_percent",
+        native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     BlaubergS21SensorEntityDescription(
