@@ -25,10 +25,21 @@ The integration adds the following sensors alongside the climate entity:
 
 Unavailable optional telemetry is shown as `unknown`; it does not make the device unavailable.
 
+# Controls
+
+The integration adds native Home Assistant controls for supported device features:
+
+- A rotor mode select for discrete rotary heat exchangers (`Auto`, `On`, `Off`)
+- A manual fan speed percentage used by the climate entity's `Custom` fan mode
+- Buttons to reset the filter timer and current alarms
+
+Schedule, calendar, installer, PID, calibration, and factory-reset settings are deliberately
+not exposed.
+
 # Library dependency
 
-Version `0.5.0` installs the maintained [pybls21](https://github.com/simonasr/pybls21)
-4.3.0 revision from an immutable Git commit.
+Version `0.6.0` installs the maintained [pybls21](https://github.com/simonasr/pybls21)
+4.4.0 revision from an immutable Git commit.
 
 The integration refreshes the device once every 30 seconds through a shared coordinator. Control
 commands request one immediate refresh so the climate entity and all telemetry sensors update together.

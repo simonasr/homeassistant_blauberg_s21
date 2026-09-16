@@ -10,7 +10,13 @@ from pybls21.client import S21Client
 from .const import DOMAIN
 from .coordinator import BlaubergS21DataUpdateCoordinator
 
-PLATFORMS: list[Platform] = [Platform.CLIMATE, Platform.SENSOR]
+PLATFORMS: list[Platform] = [
+    Platform.BUTTON,
+    Platform.CLIMATE,
+    Platform.NUMBER,
+    Platform.SELECT,
+    Platform.SENSOR,
+]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
