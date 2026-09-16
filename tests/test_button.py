@@ -46,16 +46,13 @@ def coordinator(hass):
 def test_button_metadata(coordinator, config_entry) -> None:
     """Maintenance buttons have stable identities and config categorization."""
     buttons = {
-        description.key: BlaubergS21Button(
-            coordinator, config_entry, description
-        )
+        description.key: BlaubergS21Button(coordinator, config_entry, description)
         for description in BUTTON_DESCRIPTIONS
     }
 
     assert set(buttons) == {"reset_filter_timer", "reset_alarms"}
     assert (
-        buttons["reset_filter_timer"].unique_id
-        == "synthetic-device_reset_filter_timer"
+        buttons["reset_filter_timer"].unique_id == "synthetic-device_reset_filter_timer"
     )
     assert buttons["reset_alarms"].entity_category is EntityCategory.CONFIG
 
@@ -80,7 +77,9 @@ async def test_button_press_runs_command_and_refreshes(
     coordinator.async_request_refresh.assert_awaited_once()
 
 
-async def test_failed_button_command_does_not_refresh(coordinator, config_entry) -> None:
+async def test_failed_button_command_does_not_refresh(
+    coordinator, config_entry
+) -> None:
     """A failed maintenance command does not pretend state was refreshed."""
     description = next(
         item for item in BUTTON_DESCRIPTIONS if item.key == "reset_alarms"

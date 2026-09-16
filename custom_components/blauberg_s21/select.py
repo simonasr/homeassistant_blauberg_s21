@@ -40,8 +40,7 @@ async def async_setup_entry(
     ]
     if (
         coordinator.data is not None
-        and coordinator.data.heat_exchanger_type
-        is HeatExchangerType.ROTARY_DISCRETE
+        and coordinator.data.heat_exchanger_type is HeatExchangerType.ROTARY_DISCRETE
     ):
         async_add_entities([BlaubergS21RotorModeSelect(coordinator, config_entry)])
 

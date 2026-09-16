@@ -62,9 +62,7 @@ def test_rotor_select_metadata_and_state(coordinator, config_entry) -> None:
     assert entity.entity_category is EntityCategory.CONFIG
     assert entity.options == [OPTION_AUTO, OPTION_ROTOR_ON, OPTION_ROTOR_OFF]
     assert entity.current_option == OPTION_AUTO
-    assert entity.device_info["identifiers"] == {
-        ("blauberg_s21", "synthetic-device")
-    }
+    assert entity.device_info["identifiers"] == {("blauberg_s21", "synthetic-device")}
 
 
 async def test_rotor_select_command_refreshes_confirmed_state(
