@@ -12,6 +12,8 @@ from homeassistant.const import (
     UnitOfTemperature,
     UnitOfTime,
 )
+from homeassistant.helpers.entity import EntityCategory
+from pybls21.models import FreezeProtectionMode, MainHeaterType
 
 from custom_components.blauberg_s21.coordinator import BlaubergS21DataUpdateCoordinator
 from custom_components.blauberg_s21.sensor import SENSOR_DESCRIPTIONS, BlaubergS21Sensor
@@ -40,6 +42,12 @@ def device():
         supply_fan_speed=1010,
         extract_fan_speed=990,
         heat_exchanger_control_percent=37,
+        configured_main_heater_type=MainHeaterType.OFF,
+        configured_freeze_protection_mode=FreezeProtectionMode.OFF,
+        after_preheater_temperature=None,
+        before_main_heater_temperature=None,
+        preheater_pid_control_signal_percent=0,
+        main_heater_pid_control_signal_percent=100,
         filter_remaining_minutes=120,
         total_working_time_minutes=240,
         alarm_state=0,
@@ -62,7 +70,7 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
         for description in SENSOR_DESCRIPTIONS
     }
 
-    assert len(sensors) == 10
+    assert len(sensors) == 16
     assert sensors["supply_air_inlet_temperature"].native_value == 10.5
     assert sensors["supply_air_outlet_temperature"].native_value == 20.0
     assert sensors["extract_air_inlet_temperature"].native_value is None
@@ -79,6 +87,27 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
     assert (
         sensors["heat_exchanger_control_signal"].state_class
         is SensorStateClass.MEASUREMENT
+    )
+    assert sensors["configured_main_heater_type"].native_value == "off"
+    assert sensors["configured_freeze_protection_mode"].native_value == "off"
+    assert (
+        sensors["configured_main_heater_type"].entity_description.entity_category
+        is EntityCategory.DIAGNOSTIC
+    )
+    assert sensors["after_preheater_temperature"].native_value is None
+    assert (
+        sensors[
+            "after_preheater_temperature"
+        ].entity_description.entity_registry_enabled_default
+        is False
+    )
+    assert sensors["preheater_pid_control_signal"].native_value == 0
+    assert sensors["main_heater_pid_control_signal"].native_value == 100
+    assert (
+        sensors[
+            "preheater_pid_control_signal"
+        ].entity_description.entity_registry_enabled_default
+        is False
     )
     assert sensors["filter_remaining_time"].device_class is SensorDeviceClass.DURATION
     assert (

@@ -57,6 +57,23 @@
             "supply_fan_speed": {"name": "Tiekiamo oro ventiliatoriaus greitis"},
             "extract_fan_speed": {"name": "Ištraukiamo oro ventiliatoriaus greitis"},
             "heat_exchanger_control_signal": {"name": "Šilumokaičio valdymo signalas"},
+            "configured_main_heater_type": {
+                "name": "Sukonfigūruotas pagrindinio šildytuvo tipas",
+                "state": {"off": "Išjungta", "electric": "Elektrinis", "water": "Vandeninis"}
+            },
+            "configured_freeze_protection_mode": {
+                "name": "Sukonfigūruotas apsaugos nuo užšalimo režimas",
+                "state": {
+                    "off": "Išjungta",
+                    "preheating": "Pirminis pašildymas",
+                    "bypass_or_rotor": "Šilumokaitis arba rotorius",
+                    "fan_imbalance": "Ventiliatorių disbalansas"
+                }
+            },
+            "after_preheater_temperature": {"name": "Temperatūra po pirminio šildytuvo"},
+            "before_main_heater_temperature": {"name": "Temperatūra prieš pagrindinį šildytuvą"},
+            "preheater_pid_control_signal": {"name": "Pirminio šildytuvo PID valdymo signalas"},
+            "main_heater_pid_control_signal": {"name": "Pagrindinio šildytuvo PID valdymo signalas"},
             "filter_remaining_time": {"name": "Likęs filtro veikimo laikas"},
             "total_working_time": {"name": "Bendras veikimo laikas"},
             "alarm_status": {"name": "Aliarmo būsena"}

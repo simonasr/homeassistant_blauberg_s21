@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -19,6 +20,7 @@ from homeassistant.const import (
     UnitOfTime,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import DOMAIN
@@ -33,6 +35,12 @@ class BlaubergS21SensorEntityDescription(SensorEntityDescription):
     """Describe a Blauberg S21 telemetry sensor."""
 
     attribute: str
+    value_fn: Callable[[Any], Any] | None = None
+
+
+def _enum_name(value: Any) -> str | None:
+    """Return a stable lowercase state for a protocol enum."""
+    return None if value is None else value.name.lower()
 
 
 SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
@@ -88,6 +96,62 @@ SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
         attribute="heat_exchanger_control_percent",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="configured_main_heater_type",
+        translation_key="configured_main_heater_type",
+        attribute="configured_main_heater_type",
+        device_class=SensorDeviceClass.ENUM,
+        options=["off", "electric", "water"],
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_enum_name,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="configured_freeze_protection_mode",
+        translation_key="configured_freeze_protection_mode",
+        attribute="configured_freeze_protection_mode",
+        device_class=SensorDeviceClass.ENUM,
+        options=["off", "preheating", "bypass_or_rotor", "fan_imbalance"],
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_enum_name,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="after_preheater_temperature",
+        translation_key="after_preheater_temperature",
+        attribute="after_preheater_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="before_main_heater_temperature",
+        translation_key="before_main_heater_temperature",
+        attribute="before_main_heater_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="preheater_pid_control_signal",
+        translation_key="preheater_pid_control_signal",
+        attribute="preheater_pid_control_signal_percent",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="main_heater_pid_control_signal",
+        translation_key="main_heater_pid_control_signal",
+        attribute="main_heater_pid_control_signal_percent",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
     ),
     BlaubergS21SensorEntityDescription(
         key="filter_remaining_time",
@@ -153,4 +217,7 @@ class BlaubergS21Sensor(BlaubergS21Entity, SensorEntity):
         """Return the latest raw value without converting missing values."""
         if self._device is None:
             return None
-        return getattr(self._device, self.entity_description.attribute, None)
+        value = getattr(self._device, self.entity_description.attribute, None)
+        if self.entity_description.value_fn is not None:
+            return self.entity_description.value_fn(value)
+        return value
