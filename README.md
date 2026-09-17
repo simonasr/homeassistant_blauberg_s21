@@ -21,10 +21,14 @@ The integration adds the following sensors alongside the climate entity:
 - Extract air inlet and exhaust air outlet temperatures
 - Supply and extract fan speeds
 - Heat-exchanger control signal
+- Configured main-heater type and freeze-protection mode
+- Optional preheater/main-heater temperatures and raw PID control signals
 - Remaining filter time and total working time
 - Raw alarm status
 
 Unavailable optional telemetry is shown as `unknown`; it does not make the device unavailable.
+Heater temperatures and raw PID signals are diagnostic entities and are disabled by default.
+They report controller data, not detected hardware or measured heating power.
 
 # Controls
 
@@ -39,8 +43,8 @@ not exposed.
 
 # Library dependency
 
-Version `0.6.0` installs the maintained [pybls21](https://github.com/simonasr/pybls21)
-5.0.0 revision from an immutable Git commit.
+Version `0.7.0` installs the maintained [pybls21](https://github.com/simonasr/pybls21)
+5.1.0 revision from an immutable Git commit.
 
 The integration refreshes the device once every 30 seconds through a shared coordinator. Control
 commands request one immediate refresh so the climate entity and all telemetry sensors update together.

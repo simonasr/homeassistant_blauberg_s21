@@ -54,6 +54,23 @@
             "supply_fan_speed": {"name": "Supply fan speed"},
             "extract_fan_speed": {"name": "Extract fan speed"},
             "heat_exchanger_control_signal": {"name": "Heat exchanger control signal"},
+            "configured_main_heater_type": {
+                "name": "Configured main heater type",
+                "state": {"off": "Off", "electric": "Electric", "water": "Water"}
+            },
+            "configured_freeze_protection_mode": {
+                "name": "Configured freeze protection mode",
+                "state": {
+                    "off": "Off",
+                    "preheating": "Preheating",
+                    "bypass_or_rotor": "Bypass or rotor",
+                    "fan_imbalance": "Fan imbalance"
+                }
+            },
+            "after_preheater_temperature": {"name": "Temperature after preheater"},
+            "before_main_heater_temperature": {"name": "Temperature before main heater"},
+            "preheater_pid_control_signal": {"name": "Preheater PID control signal"},
+            "main_heater_pid_control_signal": {"name": "Main heater PID control signal"},
             "filter_remaining_time": {"name": "Filter remaining time"},
             "total_working_time": {"name": "Total working time"},
             "alarm_status": {"name": "Alarm status"}

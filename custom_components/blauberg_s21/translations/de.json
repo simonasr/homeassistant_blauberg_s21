@@ -54,6 +54,23 @@
             "supply_fan_speed": {"name": "Zuluftventilatordrehzahl"},
             "extract_fan_speed": {"name": "Abluftventilatordrehzahl"},
             "heat_exchanger_control_signal": {"name": "Wärmetauscher-Steuersignal"},
+            "configured_main_heater_type": {
+                "name": "Konfigurierter Haupterhitzertyp",
+                "state": {"off": "Aus", "electric": "Elektrisch", "water": "Wasser"}
+            },
+            "configured_freeze_protection_mode": {
+                "name": "Konfigurierter Frostschutzmodus",
+                "state": {
+                    "off": "Aus",
+                    "preheating": "Vorheizung",
+                    "bypass_or_rotor": "Bypass oder Rotor",
+                    "fan_imbalance": "Ventilatorungleichgewicht"
+                }
+            },
+            "after_preheater_temperature": {"name": "Temperatur nach Vorheizer"},
+            "before_main_heater_temperature": {"name": "Temperatur vor Haupterhitzer"},
+            "preheater_pid_control_signal": {"name": "PID-Steuersignal Vorheizer"},
+            "main_heater_pid_control_signal": {"name": "PID-Steuersignal Haupterhitzer"},
             "filter_remaining_time": {"name": "Verbleibende Filterlaufzeit"},
             "total_working_time": {"name": "Gesamtbetriebszeit"},
             "alarm_status": {"name": "Alarmstatus"}
