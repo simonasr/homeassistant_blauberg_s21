@@ -22,6 +22,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from pybls21.models import HVACMode
 
 from .const import DOMAIN
 from .coordinator import BlaubergS21DataUpdateCoordinator
@@ -35,16 +36,18 @@ class BlaubergS21SensorEntityDescription(SensorEntityDescription):
     """Describe a Blauberg S21 telemetry sensor."""
 
     attribute: str
-    value_fn: Callable[[Any], Any] | None = None
+    value_fn: Callable[[Any, Any], Any] | None = None
 
 
-def _enum_name(value: Any) -> str | None:
+def _enum_name(value: Any, _device: Any) -> str | None:
     """Return a stable lowercase state for a protocol enum."""
     return None if value is None else value.name.lower()
 
 
-def _heat_recovery_activity(value: Any) -> int | float | None:
+def _heat_recovery_activity(value: Any, device: Any) -> int | float | None:
     """Convert inverse controller status to intuitive recovery activity."""
+    if getattr(device, "hvac_mode", None) == HVACMode.OFF:
+        return 0
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     if not 0 <= value <= 100:
@@ -238,5 +241,5 @@ class BlaubergS21Sensor(BlaubergS21Entity, SensorEntity):
             return None
         value = getattr(self._device, self.entity_description.attribute, None)
         if self.entity_description.value_fn is not None:
-            return self.entity_description.value_fn(value)
+            return self.entity_description.value_fn(value, self._device)
         return value

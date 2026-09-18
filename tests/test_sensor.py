@@ -13,7 +13,7 @@ from homeassistant.const import (
     UnitOfTime,
 )
 from homeassistant.helpers.entity import EntityCategory
-from pybls21.models import ClimateDevice, FreezeProtectionMode, MainHeaterType
+from pybls21.models import ClimateDevice, FreezeProtectionMode, HVACMode, MainHeaterType
 
 from custom_components.blauberg_s21.coordinator import BlaubergS21DataUpdateCoordinator
 from custom_components.blauberg_s21.sensor import SENSOR_DESCRIPTIONS, BlaubergS21Sensor
@@ -35,6 +35,7 @@ def device():
         manufacturer="Blauberg",
         model="S21",
         sw_version="test",
+        hvac_mode=HVACMode.AUTO,
         current_intake_temperature=10.5,
         current_temperature=20.0,
         extract_air_inlet_temperature=None,
@@ -170,6 +171,21 @@ def test_heat_recovery_activity_boundaries(
     coordinator.data.heat_exchanger_status_percent = raw_status
 
     assert sensor.native_value == expected_activity
+
+
+@pytest.mark.parametrize("raw_status", [0, None, -1, 101])
+def test_heat_recovery_activity_is_zero_when_unit_is_off(
+    coordinator, config_entry, raw_status
+) -> None:
+    """A stopped ventilation unit cannot have active heat recovery."""
+    description = next(
+        item for item in SENSOR_DESCRIPTIONS if item.key == "heat_recovery_activity"
+    )
+    sensor = BlaubergS21Sensor(coordinator, config_entry, description)
+    coordinator.data.hvac_mode = HVACMode.OFF
+    coordinator.data.heat_exchanger_status_percent = raw_status
+
+    assert sensor.native_value == 0
 
 
 def test_sensor_availability_keeps_missing_optional_values_available(
