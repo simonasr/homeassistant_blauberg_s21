@@ -43,6 +43,15 @@ def _enum_name(value: Any) -> str | None:
     return None if value is None else value.name.lower()
 
 
+def _heat_recovery_activity(value: Any) -> int | float | None:
+    """Convert inverse controller status to intuitive recovery activity."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    if not 0 <= value <= 100:
+        return None
+    return 100 - value
+
+
 SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
     BlaubergS21SensorEntityDescription(
         key="supply_air_inlet_temperature",
@@ -96,6 +105,16 @@ SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
         attribute="heat_exchanger_control_percent",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="heat_recovery_activity",
+        translation_key="heat_recovery_activity",
+        attribute="heat_exchanger_status_percent",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=_heat_recovery_activity,
     ),
     BlaubergS21SensorEntityDescription(
         key="configured_main_heater_type",
