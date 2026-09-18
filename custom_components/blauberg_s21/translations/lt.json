@@ -36,6 +36,9 @@
             "reset_filter_timer": {"name": "Atstatyti filtro laikmatį"},
             "reset_alarms": {"name": "Atstatyti aliarmus"}
         },
+        "binary_sensor": {
+            "rotor_running": {"name": "Rotorius"}
+        },
         "number": {
             "manual_fan_speed": {"name": "Rankinis ventiliatoriaus greitis"}
         },
@@ -56,7 +59,8 @@
             "exhaust_air_outlet_temperature": {"name": "Šalinamo oro išleidimo temperatūra"},
             "supply_fan_speed": {"name": "Tiekiamo oro ventiliatoriaus greitis"},
             "extract_fan_speed": {"name": "Ištraukiamo oro ventiliatoriaus greitis"},
-            "heat_exchanger_control_signal": {"name": "Šilumokaičio valdymo signalas"},
+            "heat_exchanger_control_signal": {"name": "Šilumokaičio PID valdymo signalas"},
+            "heat_recovery_activity": {"name": "Šilumos grąžinimo aktyvumas"},
             "configured_main_heater_type": {
                 "name": "Sukonfigūruotas pagrindinio šildytuvo tipas",
                 "state": {"off": "Išjungta", "electric": "Elektrinis", "water": "Vandeninis"}

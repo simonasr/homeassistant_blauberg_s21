@@ -11,6 +11,7 @@ from .const import DOMAIN
 from .coordinator import BlaubergS21DataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
+    Platform.BINARY_SENSOR,
     Platform.BUTTON,
     Platform.CLIMATE,
     Platform.NUMBER,

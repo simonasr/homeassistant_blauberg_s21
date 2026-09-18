@@ -33,6 +33,9 @@
             "reset_filter_timer": {"name": "Reset filter timer"},
             "reset_alarms": {"name": "Reset alarms"}
         },
+        "binary_sensor": {
+            "rotor_running": {"name": "Rotor"}
+        },
         "number": {
             "manual_fan_speed": {"name": "Manual fan speed"}
         },
@@ -53,7 +56,8 @@
             "exhaust_air_outlet_temperature": {"name": "Exhaust air outlet temperature"},
             "supply_fan_speed": {"name": "Supply fan speed"},
             "extract_fan_speed": {"name": "Extract fan speed"},
-            "heat_exchanger_control_signal": {"name": "Heat exchanger control signal"},
+            "heat_exchanger_control_signal": {"name": "Heat exchanger PID control signal"},
+            "heat_recovery_activity": {"name": "Heat recovery activity"},
             "configured_main_heater_type": {
                 "name": "Configured main heater type",
                 "state": {"off": "Off", "electric": "Electric", "water": "Water"}

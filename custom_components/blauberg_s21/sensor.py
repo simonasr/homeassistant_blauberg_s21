@@ -22,6 +22,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from pybls21.models import HVACMode
 
 from .const import DOMAIN
 from .coordinator import BlaubergS21DataUpdateCoordinator
@@ -35,12 +36,23 @@ class BlaubergS21SensorEntityDescription(SensorEntityDescription):
     """Describe a Blauberg S21 telemetry sensor."""
 
     attribute: str
-    value_fn: Callable[[Any], Any] | None = None
+    value_fn: Callable[[Any, Any], Any] | None = None
 
 
-def _enum_name(value: Any) -> str | None:
+def _enum_name(value: Any, _device: Any) -> str | None:
     """Return a stable lowercase state for a protocol enum."""
     return None if value is None else value.name.lower()
+
+
+def _heat_recovery_activity(value: Any, device: Any) -> int | float | None:
+    """Convert inverse controller status to intuitive recovery activity."""
+    if getattr(device, "hvac_mode", None) == HVACMode.OFF:
+        return 0
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    if not 0 <= value <= 100:
+        return None
+    return 100 - value
 
 
 SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
@@ -96,6 +108,16 @@ SENSOR_DESCRIPTIONS: tuple[BlaubergS21SensorEntityDescription, ...] = (
         attribute="heat_exchanger_control_percent",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    BlaubergS21SensorEntityDescription(
+        key="heat_recovery_activity",
+        translation_key="heat_recovery_activity",
+        attribute="heat_exchanger_status_percent",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=_heat_recovery_activity,
     ),
     BlaubergS21SensorEntityDescription(
         key="configured_main_heater_type",
@@ -219,5 +241,5 @@ class BlaubergS21Sensor(BlaubergS21Entity, SensorEntity):
             return None
         value = getattr(self._device, self.entity_description.attribute, None)
         if self.entity_description.value_fn is not None:
-            return self.entity_description.value_fn(value)
+            return self.entity_description.value_fn(value, self._device)
         return value

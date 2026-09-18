@@ -13,7 +13,7 @@ from homeassistant.const import (
     UnitOfTime,
 )
 from homeassistant.helpers.entity import EntityCategory
-from pybls21.models import FreezeProtectionMode, MainHeaterType
+from pybls21.models import ClimateDevice, FreezeProtectionMode, HVACMode, MainHeaterType
 
 from custom_components.blauberg_s21.coordinator import BlaubergS21DataUpdateCoordinator
 from custom_components.blauberg_s21.sensor import SENSOR_DESCRIPTIONS, BlaubergS21Sensor
@@ -35,6 +35,7 @@ def device():
         manufacturer="Blauberg",
         model="S21",
         sw_version="test",
+        hvac_mode=HVACMode.AUTO,
         current_intake_temperature=10.5,
         current_temperature=20.0,
         extract_air_inlet_temperature=None,
@@ -42,6 +43,7 @@ def device():
         supply_fan_speed=1010,
         extract_fan_speed=990,
         heat_exchanger_control_percent=37,
+        heat_exchanger_status_percent=64,
         configured_main_heater_type=MainHeaterType.OFF,
         configured_freeze_protection_mode=FreezeProtectionMode.OFF,
         after_preheater_temperature=None,
@@ -70,7 +72,7 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
         for description in SENSOR_DESCRIPTIONS
     }
 
-    assert len(sensors) == 16
+    assert len(sensors) == 17
     assert sensors["supply_air_inlet_temperature"].native_value == 10.5
     assert sensors["supply_air_outlet_temperature"].native_value == 20.0
     assert sensors["extract_air_inlet_temperature"].native_value is None
@@ -88,6 +90,19 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
         sensors["heat_exchanger_control_signal"].state_class
         is SensorStateClass.MEASUREMENT
     )
+    assert (
+        sensors["heat_exchanger_control_signal"].entity_description.entity_category
+        is EntityCategory.DIAGNOSTIC
+    )
+    assert (
+        sensors[
+            "heat_exchanger_control_signal"
+        ].entity_description.entity_registry_enabled_default
+        is False
+    )
+    assert sensors["heat_recovery_activity"].native_value == 36
+    assert sensors["heat_recovery_activity"].native_unit_of_measurement == PERCENTAGE
+    assert sensors["heat_recovery_activity"].state_class is SensorStateClass.MEASUREMENT
     assert sensors["configured_main_heater_type"].native_value == "off"
     assert sensors["configured_freeze_protection_mode"].native_value == "off"
     assert (
@@ -134,6 +149,43 @@ def test_sensor_metadata_and_values(coordinator, config_entry) -> None:
     assert sensors["supply_air_inlet_temperature"].device_info["identifiers"] == {
         ("blauberg_s21", "synthetic-device")
     }
+
+
+def test_pybls21_exposes_heat_exchanger_status() -> None:
+    """The pinned library contract includes controller-confirmed actuator status."""
+    assert "heat_exchanger_status_percent" in ClimateDevice._fields
+
+
+@pytest.mark.parametrize(
+    ("raw_status", "expected_activity"),
+    [(0, 100), (50, 50), (100, 0), (None, None), (-1, None), (101, None)],
+)
+def test_heat_recovery_activity_boundaries(
+    coordinator, config_entry, raw_status, expected_activity
+) -> None:
+    """Inverse controller status is exposed as intuitive recovery activity."""
+    description = next(
+        item for item in SENSOR_DESCRIPTIONS if item.key == "heat_recovery_activity"
+    )
+    sensor = BlaubergS21Sensor(coordinator, config_entry, description)
+    coordinator.data.heat_exchanger_status_percent = raw_status
+
+    assert sensor.native_value == expected_activity
+
+
+@pytest.mark.parametrize("raw_status", [0, None, -1, 101])
+def test_heat_recovery_activity_is_zero_when_unit_is_off(
+    coordinator, config_entry, raw_status
+) -> None:
+    """A stopped ventilation unit cannot have active heat recovery."""
+    description = next(
+        item for item in SENSOR_DESCRIPTIONS if item.key == "heat_recovery_activity"
+    )
+    sensor = BlaubergS21Sensor(coordinator, config_entry, description)
+    coordinator.data.hvac_mode = HVACMode.OFF
+    coordinator.data.heat_exchanger_status_percent = raw_status
+
+    assert sensor.native_value == 0
 
 
 def test_sensor_availability_keeps_missing_optional_values_available(
